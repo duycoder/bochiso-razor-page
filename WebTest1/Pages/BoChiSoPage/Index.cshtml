@@ -1,0 +1,44 @@
+﻿@page
+@model WebTest1.Pages.BoChiSoPage.IndexModel
+@{
+}
+
+
+@Html.AntiForgeryToken()
+<br />
+<div class="container row p-0 m-0">
+    <div class="col-9">
+        <h2 class="text-info">Bộ chỉ số</h2>
+    </div>
+    <div class="col-3">
+        <a href="javascript:void(0)" id="btn-create-bochiso" class="btn btn-info form-control text-white">
+            Tạo bộ chỉ số
+        </a>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="form-bochiso">
+</div>
+
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#btn-create-bochiso').on('click', () => {
+                $.ajax({
+                    type: 'post',
+                    url: '@Url.Page("Index", "FormEditBoChiSo")',
+                    contentType: "application/json; charset=utf-8",
+                    beforeSend:  (xhr) =>  {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    }, success: (response) => {
+                        console.log(response);
+                        $('#form-bochiso').html(response);
+                        $('#form-bochiso').modal('show');
+                    }
+                })
+            })
+        })
+    </script>
+}
